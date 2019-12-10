@@ -1,12 +1,27 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react'
+import { AppLoading } from 'expo'
+import { StyleSheet, Text, View } from 'react-native'
+import { ApolloProvider } from '@apollo/react-hooks'
+import { AppearanceProvider } from 'react-native-appearance'
+
+import { client } from './apollo'
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
-  );
+  const [isReady, setIsReady] = useState(false)
+
+  const appLoad = async () => {}
+
+  return isReady ? (
+    <AppearanceProvider>
+      <ApolloProvider client={client}>
+        <View style={styles.container}>
+          <Text>Open up App.tsx to start working on your</Text>
+        </View>
+      </ApolloProvider>
+    </AppearanceProvider>
+  ) : (
+    <AppLoading startAsync={appLoad} onFinish={() => setIsReady(true)} />
+  )
 }
 
 const styles = StyleSheet.create({
@@ -14,6 +29,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    justifyContent: 'center'
+  }
+})
