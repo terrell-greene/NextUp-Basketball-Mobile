@@ -5,6 +5,8 @@ import { ApolloProvider } from '@apollo/react-hooks'
 import { AppearanceProvider } from 'react-native-appearance'
 
 import { client } from './apollo'
+import { defaultViewStyle } from './constants'
+import Navigator from './navigation'
 
 export default function App() {
   const [isReady, setIsReady] = useState(false)
@@ -15,7 +17,7 @@ export default function App() {
     <AppearanceProvider>
       <ApolloProvider client={client}>
         <View style={styles.container}>
-          <Text>Open up App.tsx to start working on your</Text>
+          <Navigator />
         </View>
       </ApolloProvider>
     </AppearanceProvider>
@@ -26,9 +28,10 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+    flex: 1
+    // backgroundColor: '#fff',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // ...defaultViewStyle
   }
 })
