@@ -7,8 +7,10 @@ import { getItemAsync } from 'expo-secure-store'
 import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
 
-import { client } from './apollo'
+import { client, GraphQL } from './apollo'
 import Navigator from './navigation'
+
+const { Client } = GraphQL
 
 export default function App() {
   const [isReady, setIsReady] = useState(false)
@@ -36,17 +38,49 @@ export default function App() {
       coords: { latitude, longitude }
     } = await Location.getCurrentPositionAsync()
 
-    console.log(latitude, longitude)
+    const locationData = (await client.cache.readQuery({
+      query: Client.Query.GetUserLocation
+    })) as any
+    const regionData = (await client.cache.readQuery({
+      query: Client.Query.GetMapRegion
+    })) as any
+
+    const newUserLocation = {
+      userLocation: { ...locationData.userLocation, latitude, longitude }
+    }
+
+    const newMapRegion = {
+      mapRegion: {
+        ...regionData.mapRegion,
+        latitude,
+        longitude
+      }
+    }
+
+    await client.cache.writeQuery({
+      query: Client.Query.GetUserLocation,
+      data: newUserLocation
+    })
+    await client.cache.writeQuery({
+      query: Client.Query.GetMapRegion,
+      data: newMapRegion
+    })
   }
 
-  const fetchCourtAndSessions = async () => {}
+  const fetchCourtAndSessions = async () => {
+    try {
+      await client.query({
+        query: Client.Query.FetchCourtsAndSessions
+      })
+    } catch (error) {
+      console.error(JSON.stringify(error))
+    }
+  }
 
   return isReady ? (
     <AppearanceProvider>
       <ApolloProvider client={client}>
-        <View style={styles.container}>
-          <Navigator />
-        </View>
+        <Navigator />
       </ApolloProvider>
     </AppearanceProvider>
   ) : (
