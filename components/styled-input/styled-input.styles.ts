@@ -4,7 +4,7 @@ import { colorGrey, colorRed } from '../../constants'
 
 export const StyledInputContainer = styled.View`
   width: 90%;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   align-self: center;
 `
 
@@ -20,11 +20,12 @@ export const StyledLabel = styled.Text`
   color: ${colorGrey}
   font-weight: 300;
   font-size: 16px;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 `
 
 export const StyledTextInput = styled.TextInput`
   font-size: 16px;
+  ${({ editable }) => (!editable ? `color: ${colorGrey};` : '')}
 `
 
 interface StyledErrorMessageProps {
