@@ -7,10 +7,8 @@ import { getItemAsync } from 'expo-secure-store'
 import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
 
-import { client, GraphQL } from './apollo'
+import { client, Query, Mutation } from './apollo'
 import Navigator from './navigation'
-
-const { Client } = GraphQL
 
 export default function App() {
   const [isReady, setIsReady] = useState(false)
@@ -24,7 +22,7 @@ export default function App() {
   const getPersistedUser = async () => {
     const auth = await getItemAsync('auth')
 
-    console.log(auth)
+    client.mutate({ mutation: Mutation.UpdateAuth, variables: { auth } })
   }
 
   const getLocation = async () => {
@@ -39,10 +37,10 @@ export default function App() {
     } = await Location.getCurrentPositionAsync()
 
     const locationData = (await client.cache.readQuery({
-      query: Client.Query.GetUserLocation
+      query: Query.GetUserLocation
     })) as any
     const regionData = (await client.cache.readQuery({
-      query: Client.Query.GetMapRegion
+      query: Query.GetMapRegion
     })) as any
 
     const newUserLocation = {
@@ -58,11 +56,11 @@ export default function App() {
     }
 
     await client.cache.writeQuery({
-      query: Client.Query.GetUserLocation,
+      query: Query.GetUserLocation,
       data: newUserLocation
     })
     await client.cache.writeQuery({
-      query: Client.Query.GetMapRegion,
+      query: Query.GetMapRegion,
       data: newMapRegion
     })
   }
@@ -70,7 +68,7 @@ export default function App() {
   const fetchCourtAndSessions = async () => {
     try {
       await client.query({
-        query: Client.Query.FetchCourtsAndSessions
+        query: Query.FetchCourtsAndSessions
       })
     } catch (error) {
       console.error(JSON.stringify(error))
