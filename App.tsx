@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StatusBar } from 'react-native'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { AppearanceProvider } from 'react-native-appearance'
 import { AppLoading } from 'expo'
@@ -80,6 +80,7 @@ export default function App() {
   return isReady ? (
     <AppearanceProvider>
       <ApolloProvider client={client}>
+        <StatusBar barStyle="light-content" />
         <Navigator />
       </ApolloProvider>
     </AppearanceProvider>
@@ -87,13 +88,3 @@ export default function App() {
     <AppLoading startAsync={appLoad} onFinish={() => setIsReady(true)} />
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-    // backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // ...defaultViewStyle
-  }
-})
