@@ -1,36 +1,44 @@
-import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
+import React, { useState } from 'react'
+import { Platform, ScrollView, Button } from 'react-native'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
+import { useNavigation } from 'react-navigation-hooks'
+
+import { AuthContainer, BtnContainer } from './auth.styles'
+import Login from '../../components/login/login.component'
+import SignUp from '../../components/signup/signup.component'
 
 const AuthScreen: NavigationStackScreenComponent = () => {
-  //   const [onLoginView, setOnLoginView] = useState(true)
+  const { setParams } = useNavigation()
+  const [onLoginView, setOnLoginView] = useState(true)
+
+  const title = onLoginView ? 'Sign Up' : 'Login'
+
+  const onButtonPress = () => {
+    setOnLoginView(!onLoginView)
+    setParams({ view: title })
+  }
 
   return (
-    <KeyboardAvoidingView
+    <AuthContainer
       behavior={Platform.OS === 'ios' ? 'padding' : null}
       enabled
       keyboardVerticalOffset={100}
-      style={{
-        flexDirection: 'column',
-        justifyContent: 'center'
-        // ...defaultViewStyle
-      }}
     >
       <ScrollView>
-        {/* {onLoginView ? <Login /> : <SignUp />} */}
+        {onLoginView ? <Login /> : <SignUp />}
 
-        {/* <Button
-          style={styles.switchViewBtn}
-          type="clear"
-          title={`or ${onLoginView ? 'Sign Up' : 'Login'}`}
-          onPress={() => setOnLoginView(!onLoginView)}
-        /> */}
+        <BtnContainer>
+          <Button title={`or ${title}`} onPress={onButtonPress} />
+        </BtnContainer>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </AuthContainer>
   )
 }
 
-AuthScreen.navigationOptions = {
-  title: 'Login / Sign Up'
+AuthScreen.navigationOptions = ({ navigation }) => {
+  return {
+    title: navigation.getParam('view', 'Login')
+  }
 }
 
 export default AuthScreen
