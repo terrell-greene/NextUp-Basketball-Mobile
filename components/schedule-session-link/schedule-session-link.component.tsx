@@ -12,7 +12,7 @@ import {
 } from './schedule-session-link.styles'
 import { Query } from '../../apollo'
 import { colorGreen } from '../../constants'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { CreateEditSessionRouteParams } from '../../screens/create-edit-session/create-edit-session.screen'
 
 interface ScheduleSessionLinkProps {
   btn?: boolean
@@ -22,7 +22,10 @@ interface ScheduleSessionLinkProps {
   }
 }
 
-const ScheduleSessionLink: React.FC<ScheduleSessionLinkProps> = ({ btn }) => {
+const ScheduleSessionLink: React.FC<ScheduleSessionLinkProps> = ({
+  btn,
+  courtInfo
+}) => {
   const { navigate } = useNavigation()
 
   const {
@@ -32,7 +35,14 @@ const ScheduleSessionLink: React.FC<ScheduleSessionLinkProps> = ({ btn }) => {
   } = useQuery(Query.GetAuth)
 
   const onPress = () => {
-    token ? navigate('CreateEditSession') : navigate('Authentication')
+    if (token) {
+      const routeParams: CreateEditSessionRouteParams = {
+        courtId: courtInfo ? courtInfo.courtId : null
+      }
+      navigate('CreateEditSession', routeParams)
+    } else {
+      navigate('Authentication')
+    }
   }
 
   return btn ? (
