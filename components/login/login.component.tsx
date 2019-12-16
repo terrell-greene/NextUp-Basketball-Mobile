@@ -9,7 +9,7 @@ import { useNavigation } from 'react-navigation-hooks'
 
 const Login: React.FC = () => {
   const { goBack } = useNavigation()
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState(null)
 
@@ -23,7 +23,7 @@ const Login: React.FC = () => {
   })
 
   const onSubmit = async () => {
-    const variables = { email, password }
+    const variables = { username, password }
 
     await login({ variables })
   }
@@ -31,9 +31,9 @@ const Login: React.FC = () => {
   return (
     <LoginContainer>
       <StyledInput
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
+        label="Username"
+        value={username}
+        onChangeText={setUsername}
         disabled={loading}
       />
       <StyledInput
