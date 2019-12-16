@@ -3,21 +3,19 @@ import { StyleSheet, View, Platform } from 'react-native'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import MapView, { Marker } from 'react-native-maps'
 
-import { GraphQL } from '../../apollo'
+import { Query } from '../../apollo'
 import { useQuery } from '@apollo/react-hooks'
 import { Court } from '../../apollo/graphql/types.graphql'
-
-const { Client } = GraphQL
 
 const Map: NavigationStackScreenComponent = () => {
   const map = useRef<MapView>(null)
 
   const {
     data: { mapRegion }
-  } = useQuery(Client.Query.GetMapRegion)
+  } = useQuery(Query.GetMapRegion)
   const {
     data: { courts }
-  } = useQuery<{ courts: Court[] }>(Client.Query.GetCourts)
+  } = useQuery<{ courts: Court[] }>(Query.GetCourts)
 
   const buildMarker = (court: Court) => {
     // const routeParams: CourtSessionsRouteParams = {
