@@ -8,7 +8,7 @@ const colorScheme = Appearance.getColorScheme()
 
 export const ModalInputContainer = styled.View`
   background-color: ${colorGrey};
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   width: 90%;
   border-radius: 100px;
   border-top-left-radius: 0;
