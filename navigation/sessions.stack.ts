@@ -1,12 +1,13 @@
 import { createStackNavigator } from 'react-navigation-stack'
-import SessionsScreen from '../screens/sessions/sessions.screen'
+
 import { defaultStackNavigationOptions, defaultViewStyle } from '../constants'
+import Sessions from '../screens/sessions/sessions.screen'
+import CreateEditSession from '../screens/create-edit-session/create-edit-session.screen'
 
 const SessionsStack = createStackNavigator(
   {
-    Sessions: {
-      screen: SessionsScreen
-    }
+    Sessions,
+    CreateEditSession
   },
   {
     cardStyle: defaultViewStyle,
