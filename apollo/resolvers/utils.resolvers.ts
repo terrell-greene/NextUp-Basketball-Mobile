@@ -22,3 +22,11 @@ export const updateAuthCache = async (
     await deleteItemAsync('auth')
   }
 }
+
+export const createContext = (token: string) => {
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
+}
