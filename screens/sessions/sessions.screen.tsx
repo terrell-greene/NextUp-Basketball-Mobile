@@ -14,6 +14,8 @@ const SessionsScreen: NavigationStackScreenComponent = () => {
     data: { sessions }
   } = useQuery<{ sessions: Session[] }>(Query.GetSessions)
 
+  const { data } = useQuery(Query.FetchSessions, { pollInterval: 3000 })
+
   return (
     <React.Fragment>
       {sessions.length > 0 ? (
