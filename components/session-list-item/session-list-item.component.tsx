@@ -2,13 +2,14 @@ import React from 'react'
 
 import { Session } from '../../apollo/graphql/types.graphql'
 import { ListItemContainer, ListItemText } from './session-list-item.styles'
+import SessionIcons from '../session-icons/session-icons.component'
 
 interface SessionListItemProps {
   session: Session
 }
 
 const SessionListItem: React.FC<SessionListItemProps> = ({ session }) => {
-  const { court, date, times, numberAttending } = session
+  const { id, court, date, times, numberAttending } = session
   return (
     <ListItemContainer
       title={court.name}
@@ -19,6 +20,7 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ session }) => {
           <ListItemText>{`People going: ${numberAttending}`}</ListItemText>
         </React.Fragment>
       }
+      rightIcon={<SessionIcons sessionId={id} />}
     />
   )
 }
