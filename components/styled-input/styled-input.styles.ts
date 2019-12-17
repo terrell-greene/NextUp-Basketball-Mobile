@@ -25,7 +25,7 @@ export const StyledLabel = styled.Text`
 
 export const StyledTextInput = styled.TextInput`
   font-size: 16px;
-  ${({ editable }) => (!editable ? `color: ${colorGrey};` : '')}
+  ${({ editable }) => (!editable ? `color: ${colorGrey};` : 'color: black;')}
 `
 
 interface StyledErrorMessageProps {
