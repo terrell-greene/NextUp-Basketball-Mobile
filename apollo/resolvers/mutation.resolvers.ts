@@ -59,6 +59,22 @@ export default {
     return
   },
 
+  updateSession: async (_, args, { client, cache }: Context) => {
+    const {
+      auth: { token }
+    } = cache.readQuery({ query: Client.Query.GetAuth })
+
+    const context = createContext(token)
+
+    await client.mutate({
+      mutation: API.Mutation.UpdateSession,
+      variables: args,
+      context
+    })
+
+    return
+  },
+
   joinSession: async (_, args, { client, cache }: Context) => {
     const {
       auth: { token }
