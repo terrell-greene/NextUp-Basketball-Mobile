@@ -45,6 +45,10 @@ const CreateEditSession: NavigationStackScreenComponent = () => {
 
   const mutation = sessionId ? Mutation.UpdateSession : Mutation.CreateSession
 
+  const availableCourts = courtId
+    ? courts.filter(({ id }) => id === courtId)
+    : courts
+
   const [createEditSession, { loading }] = useMutation(mutation, {
     onError: error => {
       console.error(JSON.stringify(error))
@@ -107,14 +111,14 @@ const CreateEditSession: NavigationStackScreenComponent = () => {
 
   const submitForm = async () => {
     let variables = {
-      start: moment(startDateTime).toISOString(),
-      end: moment(endDateTime).toISOString()
+      start: startDateTime.toISOString(),
+      end: endDateTime.toISOString()
     } as any
 
     if (sessionId) {
       variables.sessionId = sessionId
     } else {
-      variables.courtId = courts[selectedCourtIndex].id
+      variables.courtId = availableCourts[selectedCourtIndex].id
     }
 
     createEditSession({ variables })
@@ -127,12 +131,16 @@ const CreateEditSession: NavigationStackScreenComponent = () => {
       keyboardVerticalOffset={100}
     >
       <ScrollContainer>
-        <ModalInput label="Court" value={courts[selectedCourtIndex].name}>
+        <ModalInput
+          label="Court"
+          value={availableCourts[selectedCourtIndex].name}
+          disabled={courtId ? true : false}
+        >
           <CourtPicker
-            selectedValue={courts[selectedCourtIndex].id}
+            selectedValue={availableCourts[selectedCourtIndex].id}
             onValueChange={(value, index) => setSelectedCourtIndex(index)}
           >
-            {courts.map(court => (
+            {availableCourts.map(court => (
               <Picker.Item
                 key={court.id}
                 label={court.name}
@@ -166,7 +174,7 @@ const CreateEditSession: NavigationStackScreenComponent = () => {
         </ModalInput>
 
         <StyledSubmitBtn
-          title="Schedule Session"
+          title={sessionId ? 'Edit Session' : 'Schedule Session'}
           loading={loading}
           onPress={submitForm}
         />
@@ -175,8 +183,14 @@ const CreateEditSession: NavigationStackScreenComponent = () => {
   )
 }
 
-CreateEditSession.navigationOptions = {
-  title: 'Schedule a session'
-}
+CreateEditSession.navigationOptions = ({
+  navigation: {
+    state: {
+      params: { sessionId }
+    }
+  }
+}) => ({
+  title: sessionId ? 'Edit Session' : 'Schedule a Session'
+})
 
 export default CreateEditSession
