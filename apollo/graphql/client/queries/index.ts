@@ -5,5 +5,7 @@ export * from './get-map-region.query'
 export * from './get-user-location.query'
 export * from './get-sessions.query'
 export * from './get-auth.query'
+export * from './session-by-id.query'
 
 export * from './fetch-courts-and-sessions.query'
+export * from './fetch-sessions'
