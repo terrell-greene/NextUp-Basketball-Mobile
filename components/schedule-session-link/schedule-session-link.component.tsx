@@ -54,7 +54,8 @@ const ScheduleSessionLink: React.FC<ScheduleSessionLinkProps> = ({
   ) : (
     <ScheduleSessionLinkView>
       <ScheduleSessionLinkText>
-        No upcoming hoop sessions
+        No upcoming hoop sessions{' '}
+        {courtInfo ? `at ${courtInfo.courtName}` : null}
       </ScheduleSessionLinkText>
       <ScheduleSessionLinkBtnContainer>
         <Button
