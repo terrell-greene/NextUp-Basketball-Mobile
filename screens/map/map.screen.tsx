@@ -3,15 +3,18 @@ import { StyleSheet } from 'react-native'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import MapView, { Marker } from 'react-native-maps'
 import { useNavigation } from 'react-navigation-hooks'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 
-import { Query } from '../../apollo'
+import { Query, Mutation } from '../../apollo'
 import { Court } from '../../apollo/graphql/types.graphql'
 import { CourtSessionsRouteParams } from '../court-sessions/court-sessions.sreen'
+import MapOverlay from '../../components/map-overlay/map-overlay.component'
 
 const Map: NavigationStackScreenComponent = () => {
   const { navigate } = useNavigation()
   const map = useRef<MapView>(null)
+
+  const [updateMapRegion] = useMutation(Mutation.UpdateMapRegion)
 
   const {
     data: { mapRegion }
@@ -40,14 +43,20 @@ const Map: NavigationStackScreenComponent = () => {
   }
 
   return (
-    <MapView
-      style={StyleSheet.absoluteFillObject}
-      ref={map}
-      initialRegion={mapRegion}
-      showsUserLocation
-    >
-      {courts.map(court => buildMarker(court))}
-    </MapView>
+    <React.Fragment>
+      <MapView
+        style={StyleSheet.absoluteFillObject}
+        ref={map}
+        initialRegion={mapRegion}
+        showsUserLocation
+        onRegionChangeComplete={region =>
+          updateMapRegion({ variables: region })
+        }
+      >
+        {courts.map(court => buildMarker(court))}
+      </MapView>
+      <MapOverlay />
+    </React.Fragment>
   )
 }
 

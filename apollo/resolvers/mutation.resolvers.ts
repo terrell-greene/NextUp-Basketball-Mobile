@@ -105,5 +105,12 @@ export default {
     })
 
     return
+  },
+
+  updateMapRegion: async (_, args, { client, cache }: Context) => {
+    cache.writeQuery({
+      query: Client.Query.GetMapRegion,
+      data: { mapRegion: { __typename: 'MapRegion', ...args } }
+    })
   }
 }
