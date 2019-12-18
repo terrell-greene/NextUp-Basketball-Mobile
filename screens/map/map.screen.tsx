@@ -1,13 +1,16 @@
 import React, { useRef } from 'react'
-import { StyleSheet, View, Platform } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import MapView, { Marker } from 'react-native-maps'
+import { useNavigation } from 'react-navigation-hooks'
+import { useQuery } from '@apollo/react-hooks'
 
 import { Query } from '../../apollo'
-import { useQuery } from '@apollo/react-hooks'
 import { Court } from '../../apollo/graphql/types.graphql'
+import { CourtSessionsRouteParams } from '../court-sessions/court-sessions.sreen'
 
 const Map: NavigationStackScreenComponent = () => {
+  const { navigate } = useNavigation()
   const map = useRef<MapView>(null)
 
   const {
@@ -18,10 +21,10 @@ const Map: NavigationStackScreenComponent = () => {
   } = useQuery<{ courts: Court[] }>(Query.GetCourts)
 
   const buildMarker = (court: Court) => {
-    // const routeParams: CourtSessionsRouteParams = {
-    //   courtId: court.id,
-    //   courtName: court.name
-    // }
+    const routeParams: CourtSessionsRouteParams = {
+      courtId: court.id,
+      courtName: court.name
+    }
 
     return (
       <Marker
@@ -31,7 +34,7 @@ const Map: NavigationStackScreenComponent = () => {
           latitude: court.coords.latitude,
           longitude: court.coords.longitude
         }}
-        // onCalloutPress={() => navigate('CourtSessions', routeParams)}
+        onCalloutPress={() => navigate('CourtSessions', routeParams)}
       />
     )
   }
