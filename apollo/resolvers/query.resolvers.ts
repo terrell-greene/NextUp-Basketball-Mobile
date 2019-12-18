@@ -65,5 +65,17 @@ export default {
     const session = sessions.find(({ id }) => id === sessionId)
 
     return session
+  },
+
+  sessionsByCourtId: async (_, args, { cache }: Context) => {
+    const { courtId } = args
+
+    const { sessions } = await cache.readQuery<{ sessions: Session[] }>({
+      query: Client.Query.GetSessions
+    })
+
+    const courtSessions = sessions.filter(({ court }) => court.id === courtId)
+
+    return courtSessions
   }
 }
