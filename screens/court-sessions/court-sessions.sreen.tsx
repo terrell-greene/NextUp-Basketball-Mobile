@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import { View, FlatList } from 'react-native'
 import { useNavigation } from 'react-navigation-hooks'
@@ -16,22 +16,29 @@ export interface CourtSessionsRouteParams {
 }
 
 const CourtSessions: NavigationStackScreenComponent = () => {
+  const [sessions, setSessions] = useState(null)
   const {
     state: { params }
   } = useNavigation()
   const { courtId, courtName } = params as CourtSessionsRouteParams
 
-  const { data } = useQuery<{ sessionsByCourtId: Session[] }>(
-    Query.SessionsByCourtId,
-    { variables: { courtId } }
-  )
+  const { data } = useQuery<{ sessions: Session[] }>(Query.GetSessions)
+
+  useEffect(() => {
+    if (data) {
+      const sessionsByCourtId = data.sessions.filter(
+        ({ court }) => court.id === courtId
+      )
+      setSessions(sessionsByCourtId)
+    }
+  }, [data])
 
   return (
     <View>
-      {data && data.sessionsByCourtId.length > 0 ? (
+      {sessions && sessions.length > 0 ? (
         <FlatList
           keyExtractor={keyExtractor}
-          data={data.sessionsByCourtId}
+          data={sessions}
           renderItem={({ item }) => <SessionListItem session={item} />}
         />
       ) : (
@@ -39,6 +46,18 @@ const CourtSessions: NavigationStackScreenComponent = () => {
       )}
     </View>
   )
+}
+
+CourtSessions.navigationOptions = ({ navigation: { state } }) => {
+  const {
+    courtName,
+    courtId
+  } = (state.params as unknown) as CourtSessionsRouteParams
+
+  return {
+    title: courtName,
+    headerRight: <ScheduleSessionLink btn courtInfo={{ courtId, courtName }} />
+  }
 }
 
 export default CourtSessions
