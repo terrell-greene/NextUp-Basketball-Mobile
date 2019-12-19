@@ -24,6 +24,19 @@ export default {
       throw error.graphQLErrors[0].data
     }
   },
+
+  logout: async (_, args, { client, cache }: Context) => {
+    const data = {
+      __typename: 'AuthPayload',
+      token: null,
+      user: null
+    }
+
+    await updateAuthCache(data, cache)
+
+    return
+  },
+
   createSession: async (_, args, { client, cache }: Context) => {
     const {
       auth: { token }
