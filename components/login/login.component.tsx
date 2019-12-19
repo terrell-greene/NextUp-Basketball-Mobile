@@ -6,10 +6,13 @@ import StyledSubmitBtn from '../styled-submit-btn/styled-submit-btn.component'
 import { useMutation } from '@apollo/react-hooks'
 import { Mutation } from '../../apollo'
 import { useNavigation } from 'react-navigation-hooks'
+import { validateLogin } from './login.validation'
+import { isEmpty } from '../../utils'
 
 const Login: React.FC = () => {
   const { goBack } = useNavigation()
   const [username, setUsername] = useState('')
+  const [usernameError, setUsernameError] = useState(null)
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState(null)
 
@@ -23,9 +26,15 @@ const Login: React.FC = () => {
   })
 
   const onSubmit = async () => {
-    const variables = { username, password }
+    const result = validateLogin({ username, password })
 
-    await login({ variables })
+    setUsernameError(result.username)
+    setPasswordError(result.password)
+
+    if (isEmpty(result)) {
+      const variables = { username, password }
+      login({ variables })
+    }
   }
 
   return (
@@ -35,6 +44,7 @@ const Login: React.FC = () => {
         value={username}
         onChangeText={setUsername}
         disabled={loading}
+        errorMessage={usernameError}
       />
       <StyledInput
         label="Password"
