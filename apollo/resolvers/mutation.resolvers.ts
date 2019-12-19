@@ -112,5 +112,24 @@ export default {
       query: Client.Query.GetMapRegion,
       data: { mapRegion: { __typename: 'MapRegion', ...args } }
     })
+  },
+
+  suggestCourt: async (_, args, { client, cache }: Context) => {
+    const {
+      auth: { token }
+    } = cache.readQuery({ query: Client.Query.GetAuth })
+    const context = createContext(token)
+
+    try {
+      await client.mutate({
+        mutation: API.Mutation.SuggestCourt,
+        variables: args,
+        context
+      })
+    } catch (error) {
+      throw Error()
+    }
+
+    return
   }
 }

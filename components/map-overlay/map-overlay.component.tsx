@@ -8,6 +8,7 @@ import { MapOverlayContainer } from './map-overlay.styles'
 import { colorGreen, colorRed } from '../../constants'
 import { Query } from '../../apollo'
 import RotateView from '../rotate-view/rotate-view.component'
+import { useNavigation } from 'react-navigation-hooks'
 
 interface MapOverlayProps {
   centerMapOnUser: () => void
@@ -18,6 +19,8 @@ const MapOverlay: React.FC<MapOverlayProps> = ({
   centerMapOnUser,
   centeredOnUser
 }) => {
+  const { navigate } = useNavigation()
+
   const [fetchCourtsAndSessions, { loading }] = useLazyQuery(
     Query.FetchCourtsAndSessions
   )
@@ -29,7 +32,7 @@ const MapOverlay: React.FC<MapOverlayProps> = ({
         icon={
           <MaterialIcons size={20} name="add-location" color={colorGreen} />
         }
-        onPress={() => console.log('add location')}
+        onPress={() => navigate('SuggestCourt')}
       />
       <Button
         type="clear"
