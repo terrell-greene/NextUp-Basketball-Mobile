@@ -31,7 +31,7 @@ const Login: React.FC = () => {
     setUsernameError(result.username)
     setPasswordError(result.password)
 
-    if (isEmpty(result)) {
+    if (result.valid) {
       const variables = { username, password }
       login({ variables })
     }

@@ -6,16 +6,26 @@ interface ValidateLoginArgs {
 interface ValidateLoginResult {
   username: string | null
   password: string | null
+  valid?: boolean
 }
 
 export const validateLogin = ({
   username,
   password
 }: ValidateLoginArgs): ValidateLoginResult => {
-  return {
+  const result: ValidateLoginResult = {
     username: validateUsername(username),
     password: validatePassword(password)
   }
+  let valid = true
+
+  for (const key in result) {
+    if (result[key]) valid = false
+  }
+
+  result.valid = valid
+
+  return result
 }
 
 const validateUsername = (username: string) => {
