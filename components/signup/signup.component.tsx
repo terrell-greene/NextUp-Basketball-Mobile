@@ -84,7 +84,7 @@ const SignUp: React.FC = () => {
         value={username}
         onChangeText={setUsername}
         errorMessage={usernameError}
-        disabled={false}
+        disabled={loading}
       />
 
       <StyledInput
@@ -92,7 +92,7 @@ const SignUp: React.FC = () => {
         value={fullName}
         onChangeText={setFullName}
         errorMessage={fullNameError}
-        disabled={false}
+        disabled={loading}
       />
 
       <StyledInput
@@ -100,7 +100,7 @@ const SignUp: React.FC = () => {
         value={password}
         onChangeText={setPassword}
         errorMessage={passwordError}
-        disabled={false}
+        disabled={loading}
         secureTextEntry
       />
 
@@ -109,11 +109,11 @@ const SignUp: React.FC = () => {
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         errorMessage={confirmPasswordError}
-        disabled={false}
+        disabled={loading}
         secureTextEntry
       />
 
-      <StyledSubmitBtn loading={false} title="Sign Up" onPress={onSubmit} />
+      <StyledSubmitBtn loading={loading} title="Sign Up" onPress={onSubmit} />
     </SignUpContainer>
   )
 }

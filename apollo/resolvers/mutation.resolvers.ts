@@ -29,7 +29,6 @@ export default {
   },
 
   signup: async (_, args, { client, cache }: Context) => {
-    console.log(args)
     const avatar = args.avatarUrl
       ? new ReactNativeFile({
           uri: args.avatarUrl,
