@@ -1,3 +1,5 @@
+import { ReactNativeFile } from 'apollo-upload-client'
+
 import { GraphQL } from '../graphql'
 import { Context } from './types.resolvers'
 import { updateAuthCache, createContext } from './utils.resolvers'
@@ -10,6 +12,7 @@ export default {
 
     await updateAuthCache(JSON.parse(auth), cache)
   },
+
   login: async (_, args, { client, cache }: Context) => {
     try {
       const result = await client.mutate({
@@ -25,14 +28,33 @@ export default {
     }
   },
 
-  logout: async (_, args, { client, cache }: Context) => {
-    const data = {
-      __typename: 'AuthPayload',
-      token: null,
-      user: null
-    }
+  signup: async (_, args, { client, cache }: Context) => {
+    console.log(args)
+    const avatar = args.avatarUrl
+      ? new ReactNativeFile({
+          uri: args.avatarUrl,
+          name: 'avatar',
+          type: 'image/jpg'
+        })
+      : null
 
-    await updateAuthCache(data, cache)
+    try {
+      const result = await client.mutate({
+        mutation: API.Mutation.SignUp,
+        variables: { ...args, avatar }
+      })
+      const { signup } = result.data
+      await updateAuthCache(signup, cache)
+
+      return
+    } catch (error) {
+      console.log(JSON.stringify(error))
+      throw error.graphQLErrors[0].data
+    }
+  },
+
+  logout: async (_, args, { client, cache }: Context) => {
+    await updateAuthCache(null, cache)
 
     return
   },
@@ -140,7 +162,7 @@ export default {
         context
       })
     } catch (error) {
-      throw Error()
+      console.log(JSON.stringify(error))
     }
 
     return
