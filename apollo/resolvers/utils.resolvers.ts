@@ -7,19 +7,26 @@ import { GraphQL } from '../graphql'
 const { Client } = GraphQL
 
 export const updateAuthCache = async (
-  data: any,
+  data: object | null,
   cache: ApolloCache<NormalizedCacheObject>
 ) => {
   const updatedAuth = {
-    auth: data
+    auth:
+      data === null
+        ? {
+            __typename: 'AuthPayload',
+            token: null,
+            user: null
+          }
+        : data
   }
 
   await cache.writeQuery({ query: Client.Query.GetAuth, data: updatedAuth })
 
-  if (data.token) {
-    await setItemAsync('auth', JSON.stringify(data))
-  } else {
+  if (data === null) {
     await deleteItemAsync('auth')
+  } else {
+    await setItemAsync('auth', JSON.stringify(data))
   }
 }
 
