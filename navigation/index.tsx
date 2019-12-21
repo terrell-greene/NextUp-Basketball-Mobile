@@ -33,7 +33,8 @@ const AppNavigator = createStackNavigator(
   },
   {
     cardStyle: defaultViewStyle,
-    defaultNavigationOptions: defaultStackNavigationOptions
+    defaultNavigationOptions: defaultStackNavigationOptions,
+    headerLayoutPreset: 'center'
   }
 )
 

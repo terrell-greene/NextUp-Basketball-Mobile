@@ -21,7 +21,8 @@ const CourtsStack = createStackNavigator(
   },
   {
     cardStyle: defaultViewStyle,
-    defaultNavigationOptions: defaultStackNavigationOptions
+    defaultNavigationOptions: defaultStackNavigationOptions,
+    headerLayoutPreset: 'center'
   }
 )
 

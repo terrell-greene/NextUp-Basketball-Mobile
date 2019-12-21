@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Platform, ScrollView, Button } from 'react-native'
+import { ScrollView } from 'react-native'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import { useNavigation } from 'react-navigation-hooks'
 
-import { AuthContainer, BtnContainer } from './auth.styles'
+import { AuthContainer, SwitchViewBtn } from './auth.styles'
 import Login from '../../components/login/login.component'
 import SignUp from '../../components/signup/signup.component'
 
@@ -19,17 +19,14 @@ const AuthScreen: NavigationStackScreenComponent = () => {
   }
 
   return (
-    <AuthContainer
-      behavior={Platform.OS === 'ios' ? 'padding' : null}
-      enabled
-      keyboardVerticalOffset={100}
-    >
+    <AuthContainer>
       <ScrollView>
         {onLoginView ? <Login /> : <SignUp />}
 
-        <BtnContainer>
-          <Button title={`or ${title}`} onPress={onButtonPress} />
-        </BtnContainer>
+        <SwitchViewBtn
+          title={`or ${onLoginView ? 'Sign Up' : 'Login'}`}
+          onPress={onButtonPress}
+        />
       </ScrollView>
     </AuthContainer>
   )

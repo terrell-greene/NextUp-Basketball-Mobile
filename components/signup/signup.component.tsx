@@ -68,7 +68,7 @@ const SignUp: React.FC = () => {
   return (
     <SignUpContainer>
       <Avatar
-        size="xlarge"
+        size={125}
         rounded
         icon={{ name: 'user', type: 'font-awesome' }}
         showEditButton

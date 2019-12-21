@@ -1,7 +1,6 @@
 import React from 'react'
-import { Button, ActivityIndicator } from 'react-native'
 
-import { StyledSubmitBtnContainer } from './styled-submit-btn.styles'
+import { StyledBtn } from './styled-submit-btn.styles'
 
 interface StyledSubmitBtnProps {
   title: string
@@ -9,17 +8,8 @@ interface StyledSubmitBtnProps {
   onPress: () => void
 }
 
-const StyledSubmitBtn: React.FC<StyledSubmitBtnProps> = props => {
-  const { loading } = props
-  return (
-    <StyledSubmitBtnContainer>
-      {loading ? (
-        <ActivityIndicator color="white" />
-      ) : (
-        <Button color="white" {...props} />
-      )}
-    </StyledSubmitBtnContainer>
-  )
-}
+const StyledSubmitBtn: React.FC<StyledSubmitBtnProps> = props => (
+  <StyledBtn {...props} />
+)
 
 export default StyledSubmitBtn

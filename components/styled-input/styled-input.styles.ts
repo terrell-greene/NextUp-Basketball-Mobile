@@ -1,38 +1,30 @@
 import styled from 'styled-components/native'
 import { Platform } from 'react-native'
 import { colorGrey, colorRed } from '../../constants'
+import { Input } from 'react-native-elements'
 
-export const StyledInputContainer = styled.View`
-  width: 90%;
-  margin-bottom: 8px;
-  align-self: center;
-`
-
-export const StyledTextInputContainer = styled.View`
-  background-color: white;
-  border-radius: 100px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: ${Platform.OS === 'ios' ? 20 : 100}px;
-  padding: 10px;
-`
-
-export const StyledLabel = styled.Text`
-  color: ${colorGrey}
-  font-weight: 300;
-  font-size: 16px;
-  margin-bottom: 5px;
-`
-
-export const StyledTextInput = styled.TextInput`
-  font-size: 16px;
-  ${({ editable }) => (!editable ? `color: ${colorGrey};` : 'color: black;')}
-`
-
-interface StyledErrorMessageProps {
-  errorMessage: string | null
-}
-
-export const StyledErrorMessage = styled.Text<StyledErrorMessageProps>`
-  color: ${colorRed};
-  ${({ errorMessage }) => (errorMessage ? 'margin-top: 5px;' : '')}
-`
+export const StyledTextInput = styled(Input).attrs(() => ({
+  containerStyle: {
+    paddingHorizontal: 0,
+    marginBottom: 15,
+    width: '90%',
+    alignSelf: 'center'
+  },
+  inputContainerStyle: {
+    paddingHorizontal: 10,
+    backgroundColor: 'white',
+    borderBottomWidth: 0,
+    borderRadius: 100,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: Platform.OS === 'ios' ? 20 : 100
+  },
+  labelStyle: {
+    fontWeight: '300',
+    marginBottom: 5
+  },
+  selectionColor: colorGrey,
+  autoCapitalize: 'none',
+  errorStyle: {
+    color: colorRed
+  }
+}))``

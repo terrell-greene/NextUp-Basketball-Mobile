@@ -18,9 +18,7 @@ const UserTile: React.FC<UserTileProps> = ({ user }) => {
     <UserTileContainer>
       <Avatar
         rounded
-        source={{
-          uri: user.avatarUrl ? user.avatarUrl : undefined
-        }}
+        source={user.avatarUrl ? { uri: user.avatarUrl } : null}
         icon={{ name: 'user', type: 'font-awesome' }}
       />
       <UserTileTextContainer>

@@ -17,7 +17,8 @@ const SessionsStack = createStackNavigator(
   },
   {
     cardStyle: defaultViewStyle,
-    defaultNavigationOptions: defaultStackNavigationOptions
+    defaultNavigationOptions: defaultStackNavigationOptions,
+    headerLayoutPreset: 'center'
   }
 )
 
