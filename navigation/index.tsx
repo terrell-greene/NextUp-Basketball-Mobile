@@ -7,6 +7,7 @@ import { defaultStackNavigationOptions, defaultViewStyle } from '../constants'
 import TabNavigator from './TabNavigator'
 import AuthScreen from '../screens/auth/auth.screen'
 import SideDrawer from './side.drawer'
+import Profile from '../screens/profile/profile.screen'
 
 const DrawerNavigator = createDrawerNavigator(
   {
@@ -29,7 +30,8 @@ const AppNavigator = createStackNavigator(
       screen: DrawerNavigator,
       navigationOptions: { header: null }
     },
-    Authentication: AuthScreen
+    Authentication: AuthScreen,
+    Profile
   },
   {
     cardStyle: defaultViewStyle,

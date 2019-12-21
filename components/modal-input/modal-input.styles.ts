@@ -1,6 +1,7 @@
 import styled from 'styled-components/native'
 import { Appearance } from 'react-native-appearance'
 import Modal from 'react-native-modal'
+import { Platform } from 'react-native'
 
 import { colorGrey, colorDarkGrey } from '../../constants'
 
@@ -12,7 +13,7 @@ export const ModalInputContainer = styled.View`
   width: 90%;
   border-radius: 100px;
   border-top-left-radius: 0;
-  border-bottom-left-radius: 20px;
+  border-bottom-left-radius: ${Platform.OS === 'ios' ? 20 : 100}px;
 `
 
 export const InputContainer = styled.View`

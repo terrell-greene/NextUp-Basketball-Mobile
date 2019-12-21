@@ -52,6 +52,45 @@ export default {
     }
   },
 
+  updateUser: async (_, args, { client, cache }: Context) => {
+    const { auth } = cache.readQuery({ query: Client.Query.GetAuth })
+
+    const { token, user } = auth
+
+    const avatar = args.avatarUrl
+      ? new ReactNativeFile({
+          uri: args.avatarUrl,
+          name: 'avatar',
+          type: 'image/jpg'
+        })
+      : null
+
+    const variables = {
+      avatar,
+      userId: user.id,
+      fullName: args.fullName,
+      username: args.username
+    }
+
+    const context = createContext(token)
+
+    try {
+      const {
+        data: { updateUser }
+      } = await client.mutate({
+        mutation: API.Mutation.UpdateUser,
+        variables,
+        context
+      })
+
+      await updateAuthCache({ ...auth, user: updateUser }, cache)
+      return
+    } catch (error) {
+      console.log(JSON.stringify(error))
+      throw error.graphQLErrors[0].data
+    }
+  },
+
   logout: async (_, args, { client, cache }: Context) => {
     await updateAuthCache(null, cache)
 

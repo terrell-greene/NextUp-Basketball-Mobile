@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/react-hooks'
 import { Query } from '../../apollo'
 
 const ProfileIcon: React.FC = () => {
-  const { openDrawer } = useNavigation()
+  const { navigate } = useNavigation()
   const {
     data: {
       auth: { user }
@@ -20,7 +20,7 @@ const ProfileIcon: React.FC = () => {
       source={{
         uri: user.avatarUrl ? user.avatarUrl : undefined
       }}
-      onPress={openDrawer}
+      onPress={() => navigate('Profile')}
     />
   ) : null
 }
