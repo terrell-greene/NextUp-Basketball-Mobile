@@ -2,14 +2,13 @@ import React, { useState } from 'react'
 import { useNavigation } from 'react-navigation-hooks'
 import { useMutation } from '@apollo/react-hooks'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
-import { Alert } from 'react-native'
+import { Alert, ScrollView } from 'react-native'
 
 import { SuggestCourtContainer } from './suggest-court.styles'
 import StyledInput from '../../components/styled-input/styled-input.component'
 import StyledSubmitBtn from '../../components/styled-submit-btn/styled-submit-btn.component'
 import { Mutation } from '../../apollo'
 import { validateSuggestCourt } from './suggest-court.validation'
-import { isEmpty } from '../../utils'
 
 const SuggestCourt: NavigationStackScreenComponent = () => {
   const { goBack } = useNavigation()
@@ -63,43 +62,45 @@ const SuggestCourt: NavigationStackScreenComponent = () => {
 
   return (
     <SuggestCourtContainer>
-      <StyledInput
-        label="Court Name"
-        value={courtName}
-        onChangeText={setCourtName}
-        errorMessage={courtNameError}
-        disabled={false}
-      />
-      <StyledInput
-        label="Street"
-        value={street}
-        onChangeText={setStreet}
-        errorMessage={streetError}
-        disabled={false}
-      />
-      <StyledInput
-        label="City"
-        value={city}
-        onChangeText={setCity}
-        errorMessage={cityError}
-        disabled={false}
-      />
-      <StyledInput
-        label="State"
-        value={state}
-        onChangeText={setState}
-        errorMessage={stateError}
-        disabled={false}
-      />
-      <StyledInput
-        label="Zip Code"
-        value={zipCode}
-        onChangeText={setZipCode}
-        errorMessage={zipCodeError}
-        disabled={false}
-      />
+      <ScrollView>
+        <StyledInput
+          label="Court Name"
+          value={courtName}
+          onChangeText={setCourtName}
+          errorMessage={courtNameError}
+          disabled={false}
+        />
+        <StyledInput
+          label="Street"
+          value={street}
+          onChangeText={setStreet}
+          errorMessage={streetError}
+          disabled={false}
+        />
+        <StyledInput
+          label="City"
+          value={city}
+          onChangeText={setCity}
+          errorMessage={cityError}
+          disabled={false}
+        />
+        <StyledInput
+          label="State"
+          value={state}
+          onChangeText={setState}
+          errorMessage={stateError}
+          disabled={false}
+        />
+        <StyledInput
+          label="Zip Code"
+          value={zipCode}
+          onChangeText={setZipCode}
+          errorMessage={zipCodeError}
+          disabled={false}
+        />
 
-      <StyledSubmitBtn loading={loading} title="Submit" onPress={onSubmit} />
+        <StyledSubmitBtn loading={loading} title="Submit" onPress={onSubmit} />
+      </ScrollView>
     </SuggestCourtContainer>
   )
 }

@@ -25,6 +25,8 @@ const RotateView: React.FC<RotateViewProps> = ({ rotate, children }) => {
       const animatedStyles = { transform: [{ rotate: rotateInterpolate }] }
 
       setstyles(animatedStyles)
+    } else {
+      setstyles(null)
     }
   }, [rotate])
 

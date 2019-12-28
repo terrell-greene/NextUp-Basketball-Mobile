@@ -33,6 +33,7 @@ const Profile: NavigationStackScreenComponent = () => {
     if (user) {
       setUsername(user.username)
       setFullName(user.fullName)
+      setAvatarUrl(user.avatarUrl)
     }
   }, [user])
 
