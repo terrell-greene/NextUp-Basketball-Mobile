@@ -3,6 +3,7 @@ import { useNavigation } from 'react-navigation-hooks'
 import { useMutation } from '@apollo/react-hooks'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import { Alert, ScrollView } from 'react-native'
+import momentTz from 'moment-timezone'
 
 import { SuggestCourtContainer } from './suggest-court.styles'
 import StyledInput from '../../components/styled-input/styled-input.component'
@@ -17,7 +18,7 @@ const SuggestCourt: NavigationStackScreenComponent = () => {
     onCompleted: () => {
       Alert.alert(
         'Submitted court successfully!',
-        'Please allow up to 10 days for the court to be added',
+        'Please allow us some time to review the submission, and add it to the app.',
         [{ text: 'OK', onPress: () => goBack() }]
       )
     }
@@ -55,7 +56,14 @@ const SuggestCourt: NavigationStackScreenComponent = () => {
 
     if (result.valid) {
       suggestCourt({
-        variables: { name: courtName, street, city, state, zipCode }
+        variables: {
+          name: courtName,
+          street,
+          city,
+          state,
+          zipCode,
+          timeZone: momentTz.tz.guess()
+        }
       })
     }
   }
@@ -103,6 +111,10 @@ const SuggestCourt: NavigationStackScreenComponent = () => {
       </ScrollView>
     </SuggestCourtContainer>
   )
+}
+
+SuggestCourt.navigationOptions = {
+  title: 'Submit a new court'
 }
 
 export default SuggestCourt
