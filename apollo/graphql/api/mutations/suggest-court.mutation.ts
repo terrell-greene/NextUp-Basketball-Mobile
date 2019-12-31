@@ -7,6 +7,7 @@ export const SuggestCourt = gql`
     $city: String!
     $state: String!
     $zipCode: String!
+    $timeZone: String!
   ) {
     suggestCourt(
       input: {
@@ -15,6 +16,7 @@ export const SuggestCourt = gql`
         city: $city
         state: $state
         zipCode: $zipCode
+        timeZone: $timeZone
       }
     ) {
       id
