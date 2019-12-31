@@ -5,12 +5,13 @@ import { ApolloError } from 'apollo-client'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { useNavigation } from 'react-navigation-hooks'
 
-import { ProfileContainer } from './profile.styles'
+import { ProfileContainer, LogoutBtn } from './profile.styles'
 import { Mutation, Query } from '../../apollo'
 import StyledInput from '../../components/styled-input/styled-input.component'
 import { User } from '../../apollo/graphql/types.graphql'
 import { getPhoto } from '../../utils'
 import StyledSubmitBtn from '../../components/styled-submit-btn/styled-submit-btn.component'
+import { colorBlue } from '../../constants'
 
 const Profile: NavigationStackScreenComponent = () => {
   const {
@@ -20,6 +21,8 @@ const Profile: NavigationStackScreenComponent = () => {
   } = useQuery<{ auth: { user: User } }>(Query.GetAuth)
 
   const { goBack } = useNavigation()
+
+  const [profileEdited, setProfileEdited] = useState(false)
 
   const [avatarUrl, setAvatarUrl] = useState(null)
 
@@ -36,6 +39,24 @@ const Profile: NavigationStackScreenComponent = () => {
       setAvatarUrl(user.avatarUrl)
     }
   }, [user])
+
+  useEffect(() => {
+    if (user) {
+      if (
+        fullName !== user.fullName ||
+        username !== user.username ||
+        avatarUrl !== user.avatarUrl
+      ) {
+        setProfileEdited(true)
+      } else {
+        setProfileEdited(false)
+      }
+    }
+  }, [user, fullName, username, avatarUrl])
+
+  const [logout, { loading: logoutLoading }] = useMutation(Mutation.Logout, {
+    onCompleted: () => goBack()
+  })
 
   const [updateUser, { loading }] = useMutation(Mutation.UpdateUser, {
     onError: (error: ApolloError) => {
@@ -93,9 +114,16 @@ const Profile: NavigationStackScreenComponent = () => {
       />
 
       <StyledSubmitBtn
-        title="Edit Profile"
+        title="Save Changes"
         loading={loading}
+        color={colorBlue}
+        disabled={!profileEdited}
         onPress={onSubmit}
+      />
+      <LogoutBtn
+        title="or Logout"
+        onPress={() => logout()}
+        loading={logoutLoading}
       />
     </ProfileContainer>
   )
