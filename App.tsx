@@ -9,6 +9,7 @@ import * as Location from 'expo-location'
 
 import { client, Query, Mutation } from './apollo'
 import Navigator from './navigation'
+import { authKey } from './utils'
 
 export default function App() {
   const [isReady, setIsReady] = useState(false)
@@ -20,7 +21,7 @@ export default function App() {
   }
 
   const getPersistedUser = async () => {
-    const auth = await getItemAsync('auth')
+    const auth = await getItemAsync(authKey)
 
     client.mutate({ mutation: Mutation.UpdateAuth, variables: { auth } })
   }

@@ -4,6 +4,8 @@ import * as ImagePicker from 'expo-image-picker'
 
 export const keyExtractor = item => item.id.toString()
 
+export const authKey = 'auth'
+
 export const isEmpty = (value: any) =>
   value === undefined ||
   value === null ||
