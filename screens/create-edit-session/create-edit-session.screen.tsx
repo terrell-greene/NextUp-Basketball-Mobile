@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { KeyboardAvoidingView, Platform, Picker } from 'react-native'
-import DateTimePicker, { Event } from '@react-native-community/datetimepicker'
+import { KeyboardAvoidingView, Platform } from 'react-native'
+import { Event } from '@react-native-community/datetimepicker'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import { Appearance } from 'react-native-appearance'
 import { useNavigation } from 'react-navigation-hooks'
 import moment from 'moment'
+import momentTz from 'moment-timezone'
 
 import { Query, Mutation } from '../../apollo'
-import { ScrollContainer, CourtPicker } from './create-edit-session.styles'
-import ModalInput from '../../components/modal-input/modal-input.component'
+import { ScrollContainer } from './create-edit-session.styles'
 import { Court, Session } from '../../apollo/graphql/types.graphql'
 import StyledSubmitBtn from '../../components/styled-submit-btn/styled-submit-btn.component'
-
-const colorScheme = Appearance.getColorScheme()
+import CreateEditSessionIOS from './create-edit-session.ios'
+import CreateEditSessionAndroid from './create-edit-session.android'
 
 export interface CreateEditSessionRouteParams {
   courtId?: string
@@ -37,8 +36,10 @@ const CreateEditSession: NavigationStackScreenComponent = () => {
   useEffect(() => {
     if (sessionId) {
       const session = sessions.find(({ id }) => id === sessionId)
+      const newStartDateTime = moment(session.start).toDate()
       const newEndDateTime = moment(session.end).toDate()
 
+      setStartDateTime(newStartDateTime)
       setEndDateTime(newEndDateTime)
     }
   }, [])
@@ -56,9 +57,7 @@ const CreateEditSession: NavigationStackScreenComponent = () => {
     onCompleted: () => goBack()
   })
 
-  const minStartDate = sessionId
-    ? moment(sessions.find(({ id }) => id === sessionId).start).toDate()
-    : moment().toDate()
+  const minStartDate = moment().toDate()
 
   const maxStartDate = moment()
     .add(7, 'd')
@@ -111,8 +110,8 @@ const CreateEditSession: NavigationStackScreenComponent = () => {
 
   const submitForm = async () => {
     let variables = {
-      start: startDateTime.toISOString(),
-      end: endDateTime.toISOString()
+      start: moment(startDateTime).toISOString(),
+      end: moment(endDateTime).toISOString()
     } as any
 
     if (sessionId) {
@@ -131,48 +130,40 @@ const CreateEditSession: NavigationStackScreenComponent = () => {
       keyboardVerticalOffset={100}
     >
       <ScrollContainer>
-        <ModalInput
-          label="Court"
-          value={availableCourts[selectedCourtIndex].name}
-          disabled={courtId ? true : false}
-        >
-          <CourtPicker
-            selectedValue={availableCourts[selectedCourtIndex].id}
-            onValueChange={(value, index) => setSelectedCourtIndex(index)}
-          >
-            {availableCourts.map(court => (
-              <Picker.Item
-                key={court.id}
-                label={court.name}
-                value={court.id}
-                color={colorScheme === 'light' ? 'black' : 'white'}
-              />
-            ))}
-          </CourtPicker>
-        </ModalInput>
-        <ModalInput
-          label="Start Time"
-          value={formattedStartDateTime(startDateTime)}
-        >
-          <DateTimePicker
-            minimumDate={minStartDate}
-            maximumDate={maxStartDate}
-            mode="datetime"
-            value={startDateTime}
-            onChange={onStartDateTimeChange}
-          />
-        </ModalInput>
-        <ModalInput label="End Time" value={formattedEndDateTime(endDateTime)}>
-          <DateTimePicker
-            minimumDate={moment(startDateTime)
+        {Platform.OS === 'ios' ? (
+          <CreateEditSessionIOS
+            courts={availableCourts}
+            courtModalDisabled={courtId ? true : false}
+            selectedCourt={availableCourts[selectedCourtIndex]}
+            onCourtChange={setSelectedCourtIndex}
+            formattedStartTimeValue={formattedStartDateTime(startDateTime)}
+            minStartDate={minStartDate}
+            maxStartDate={maxStartDate}
+            startTimeValue={startDateTime}
+            onStartTimeChange={onStartDateTimeChange}
+            formattedEndTimeValue={formattedEndDateTime(endDateTime)}
+            minEndDate={moment(startDateTime)
               .add(1, 'hour')
               .toDate()}
-            mode="time"
-            value={endDateTime}
-            onChange={onEndDateTimeChange}
+            endTimeValue={endDateTime}
+            onEndTimeChange={onEndDateTimeChange}
           />
-        </ModalInput>
-
+        ) : (
+          <CreateEditSessionAndroid
+            courts={availableCourts}
+            selectedCourt={availableCourts[selectedCourtIndex]}
+            onCourtChange={setSelectedCourtIndex}
+            minStartDate={minStartDate}
+            maxStartDate={maxStartDate}
+            startTimeValue={startDateTime}
+            onStartTimeChange={onStartDateTimeChange}
+            minEndDate={moment(startDateTime)
+              .add(1, 'hour')
+              .toDate()}
+            endTimeValue={endDateTime}
+            onEndTimeChange={onEndDateTimeChange}
+          />
+        )}
         <StyledSubmitBtn
           title={sessionId ? 'Edit Session' : 'Schedule Session'}
           loading={loading}
