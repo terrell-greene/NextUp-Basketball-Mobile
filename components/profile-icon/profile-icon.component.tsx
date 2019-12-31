@@ -17,9 +17,13 @@ const ProfileIcon: React.FC = () => {
     <Avatar
       rounded
       icon={{ name: 'user', type: 'font-awesome' }}
-      source={{
-        uri: user.avatarUrl ? user.avatarUrl : undefined
-      }}
+      source={
+        user.avatarUrl
+          ? {
+              uri: user.avatarUrl
+            }
+          : undefined
+      }
       onPress={() => navigate('Profile')}
     />
   ) : null
