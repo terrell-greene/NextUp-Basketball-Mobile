@@ -1,4 +1,7 @@
 import styled from 'styled-components/native'
+import { Platform } from 'react-native'
+import { Button } from 'react-native-elements'
+
 import { colorGrey, colorGreen } from '../../constants'
 
 export const ScheduleSessionLinkView = styled.View`
@@ -9,11 +12,18 @@ export const ScheduleSessionLinkText = styled.Text`
   color: ${colorGrey};
   font-size: 20px;
   text-align: center;
+  padding: 0 10px;
 `
-export const ScheduleSessionLinkBtnContainer = styled.View`
-  margin-top: 20px;
-  align-self: center;
-  border-radius: 100px;
-  width: 50%;
-  background-color: ${colorGreen};
-`
+
+export const ScheduleSessionLinkBtn = styled(Button).attrs(() => ({
+  containerStyle: {
+    width: '50%',
+    marginTop: 20,
+    marginBottom: 25,
+    alignSelf: 'center'
+  },
+  buttonStyle: {
+    backgroundColor: colorGreen,
+    borderRadius: 100
+  }
+}))``

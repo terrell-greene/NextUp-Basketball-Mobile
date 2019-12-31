@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-native'
+import { Alert, AlertButton, Platform } from 'react-native'
 import { Button as BtnIcon } from 'react-native-elements'
 import { useNavigation } from 'react-navigation-hooks'
 import { useQuery } from '@apollo/react-hooks'
@@ -8,7 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import {
   ScheduleSessionLinkView,
   ScheduleSessionLinkText,
-  ScheduleSessionLinkBtnContainer
+  ScheduleSessionLinkBtn
 } from './schedule-session-link.styles'
 import { Query } from '../../apollo'
 import { colorGreen } from '../../constants'
@@ -34,8 +34,39 @@ const ScheduleSessionLink: React.FC<ScheduleSessionLinkProps> = ({
     }
   } = useQuery(Query.GetAuth)
 
+  const {
+    data: { courts }
+  } = useQuery(Query.GetCourts)
+
   const onPress = () => {
-    if (token) {
+    const iosBtns: AlertButton[] = [
+      {
+        text: 'Submit a court',
+        onPress: () => navigate('SuggestCourt')
+      },
+      {
+        text: 'Cancel',
+        style: 'destructive'
+      }
+    ]
+
+    const androidBtns: AlertButton[] = [
+      {
+        text: 'Cancel',
+        style: 'destructive'
+      },
+      {
+        text: 'Submit a court',
+        onPress: () => navigate('SuggestCourt')
+      }
+    ]
+    if (courts.length === 0) {
+      Alert.alert(
+        'No courts!',
+        'No courts have been added near you. Submit a new court, so that it can be added to the map!',
+        Platform.OS === 'ios' ? iosBtns : androidBtns
+      )
+    } else if (token) {
       const routeParams: CreateEditSessionRouteParams = {
         courtId: courtInfo ? courtInfo.courtId : null
       }
@@ -57,13 +88,7 @@ const ScheduleSessionLink: React.FC<ScheduleSessionLinkProps> = ({
         No upcoming hoop sessions{' '}
         {courtInfo ? `at ${courtInfo.courtName}` : null}
       </ScheduleSessionLinkText>
-      <ScheduleSessionLinkBtnContainer>
-        <Button
-          title="Schedule a Session"
-          onPress={onPress}
-          color="white"
-        ></Button>
-      </ScheduleSessionLinkBtnContainer>
+      <ScheduleSessionLinkBtn title="Schedule a Session" onPress={onPress} />
     </ScheduleSessionLinkView>
   )
 }
