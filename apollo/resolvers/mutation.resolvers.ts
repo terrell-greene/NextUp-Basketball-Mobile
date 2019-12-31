@@ -92,7 +92,18 @@ export default {
   },
 
   logout: async (_, args, { client, cache }: Context) => {
-    await updateAuthCache(null, cache)
+    try {
+      const {
+        auth: { token }
+      } = cache.readQuery({ query: Client.Query.GetAuth })
+
+      const context = createContext(token)
+
+      await client.mutate({ mutation: API.Mutation.Logout, context })
+      await updateAuthCache(null, cache)
+    } catch (error) {
+      console.log(JSON.stringify(error))
+    }
 
     return
   },

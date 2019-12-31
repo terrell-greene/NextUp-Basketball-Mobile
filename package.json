@@ -7,6 +7,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "build:ios-staging": "expo build:ios --release-channel staging",
+    "publish:staging": "expo publish --release-channel staging",
     "upload:ios": "dotenv -e env/.env -- expo upload:ios "
   },
   "dependencies": {
@@ -21,6 +22,7 @@
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.27",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
