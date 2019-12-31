@@ -6,6 +6,8 @@ interface StyledSubmitBtnProps {
   title: string
   loading: boolean
   onPress: () => void
+  color?: string
+  disabled?: boolean
 }
 
 const StyledSubmitBtn: React.FC<StyledSubmitBtnProps> = props => (
