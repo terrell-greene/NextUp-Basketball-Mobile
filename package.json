@@ -7,6 +7,8 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "build:ios-staging": "expo build:ios --release-channel staging",
+    "build:ios-prod": "expo build:ios --release-channel production",
+    "build:android-staging": "expo build:android --release-channel production",
     "publish:staging": "expo publish --release-channel staging",
     "upload:ios": "dotenv -e env/.env -- expo upload:ios "
   },

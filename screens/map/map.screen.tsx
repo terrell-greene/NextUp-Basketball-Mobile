@@ -86,4 +86,8 @@ const Map: NavigationStackScreenComponent = () => {
   )
 }
 
+Map.navigationOptions = {
+  title: 'Courts'
+}
+
 export default Map

@@ -13,11 +13,16 @@ export const CourtTileContainer = styled.View`
   margin-bottom: 15px;
 `
 
-export const CourtTileText = styled.Text`
+export const CourtTileText = styled.Text.attrs(() => ({
+  ellipsizeMode: 'tail',
+  numberOfLines: 1
+}))`
   font-size: 16px;
   color: ${colorGrey};
   align-items: center;
+  width: 75%;
 `
 export const BtnGroupContainer = styled.View`
+  width: 25%;
   flex-direction: row;
 `

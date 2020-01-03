@@ -20,10 +20,12 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.emeraldnomad.nextup",
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "buildNumber": "6"
     },
     "android": {
-      "package": "com.emeraldnomad.nextup"
+      "package": "com.emeraldnomad.nextup",
+      "versionCode": 6
     }
   }
 }
