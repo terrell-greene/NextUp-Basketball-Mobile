@@ -21,11 +21,14 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.emeraldnomad.nextup",
       "userInterfaceStyle": "automatic",
-      "buildNumber": "6"
+      "buildNumber": "7",
+      "infoPlist": {
+        "NSLocationAlwaysUsageDescription": "User's location is used to only provide courts and hoop sessions that are near the user."
+      }
     },
     "android": {
       "package": "com.emeraldnomad.nextup",
-      "versionCode": 6
+      "versionCode": 7
     }
   }
 }
