@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Alert, AlertButton, Platform } from 'react-native'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import MapView, { Marker, Region } from 'react-native-maps'
 import { useNavigation } from 'react-navigation-hooks'
@@ -18,16 +18,48 @@ const Map: NavigationStackScreenComponent = () => {
   const [updateMapRegion] = useMutation(Mutation.UpdateMapRegion)
   const [getUserLocation, { data }] = useLazyQuery(Query.GetUserLocation)
 
-  useEffect(() => {
-    getUserLocation()
-  }, [])
-
   const {
     data: { mapRegion }
   } = useQuery(Query.GetMapRegion)
   const {
     data: { courts }
   } = useQuery<{ courts: Court[] }>(Query.GetCourts)
+
+  useEffect(() => {
+    getUserLocation()
+  }, [])
+
+  useEffect(() => {
+    if (courts.length === 0) {
+      const iosBtns: AlertButton[] = [
+        {
+          text: 'Submit a court',
+          onPress: () => navigate('SuggestCourt')
+        },
+        {
+          text: 'Cancel',
+          style: 'destructive'
+        }
+      ]
+
+      const androidBtns: AlertButton[] = [
+        {
+          text: 'Cancel',
+          style: 'destructive'
+        },
+        {
+          text: 'Submit a court',
+          onPress: () => navigate('SuggestCourt')
+        }
+      ]
+
+      Alert.alert(
+        'No courts!',
+        'No courts have been added near you. Submit a new court, so that it can be added to the map!',
+        Platform.OS === 'ios' ? iosBtns : androidBtns
+      )
+    }
+  }, [courts])
 
   const centerMapOnUser = async () => {
     await getUserLocation()
